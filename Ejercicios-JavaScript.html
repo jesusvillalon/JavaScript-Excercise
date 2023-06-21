@@ -1,0 +1,217 @@
+<html>
+<body>
+    <script>
+        // EJERCICIOS JAVASCRIPT
+
+
+        // 1.- Dado un array de objetos, obtener el objeto con el id 3.
+
+        const arrNames = [{id: 1, name: 'Pepe'},
+                          {id: 2, name: 'Juan'},
+                          {id: 3, name: 'Alba'},
+                          {id: 4, name: 'Toby'},
+                          {id: 5, name: 'Lala'}
+                         ]
+
+        console.log(arrNames[2]);
+
+        // 2.- Dado un array de valores, devolver un array truthy 
+        // (sin valores nulos, vacíos, no números, indefinidos o falsos).
+
+        const arrDirty = [NaN, 0, 5, false, -1, '',undefined, 3, null, 'test']
+
+        const arrayTruthy = arrDirty.filter((value)=>{
+            return !!value;  // Uso del método filter en el que le pasamos un valor
+                             // en el que lo convertimos a un contexto booleano y 
+                             // este nos devuelva los que no son compatibles con las 
+                             // caractterísticas que nos ha pedido el ejercicio mediante
+                             // una doble negación "!!".  
+        })
+
+        console.log(arrayTruthy);
+
+
+        // 3.- Dado un array de ciudades, sacar todas las ciudades de España que no sean capitales.
+        const arrCities = [ {city: 'Logroño', country: 'Spain', capital: false},
+                            {city: 'Paris', country: 'France', capital: true},
+                            {city: 'Madrid', country: 'Spain', capital: true},
+                            {city: 'Rome', country: 'Italy', capital: true},
+                            {city: 'Oslo', country: 'Norway', capital: true},
+                            {city: 'Jaén', country: 'Spain', capital: false}
+                            ]
+
+        const newArrCities = arrCities.filter(object => object.capital);
+        console.log(newArrCities);
+
+
+        // 4.- Dado tres arrays de números, sacar en un nuevo array la intersección de estos.
+
+        const arrNumber1 = [1,2,3];
+        const arrNumber2 = [1,2,3,4,5];
+        const arrNumber3 = [1,4,7,2];
+
+        const intersection = arrNumber1.filter(elem => arrNumber2.includes(elem) && arrNumber3.includes(elem));
+        console.log(intersection);
+
+
+        // 5.- Dado un array de ciudades, sacar en un nuevo array las ciudades 
+        // no capitales con unos nuevos parámetros que sean "city" y "isSpain".
+        // El valor de "isSpain" será un booleano indicando si es una ciudad de España.
+
+        const arrCities2 = [{city: 'Logroño', country: 'Spain', capital: false},
+                            {city: 'Bordeaux', country: 'France', capital: false},
+                            {city: 'Madrid', country: 'Spain', capital: true},
+                            {city: 'Florence', country: 'Italy', capital: true},
+                            {city: 'Oslo', country: 'Norway', capital: true},
+                            {city: 'Jaén', country: 'Spain', capital: false}
+                            ]
+
+
+        const newArrCities2 = arrCities2.filter((object) => {
+            return object.capital;})
+            .map((city) => {
+            return {...city,
+                 isSPain: city.country === "Spain"}
+                })
+            console.log(newArrCities2);
+
+
+        // 6.- Crea una función que redondee un número float a un número específico de decimales.
+        // La función debe tener dos parámetros:
+            // - Primer parámetro es un número float con x decimales.
+            // - Segundo parámetro es un int que indique el número de decimales al que redondear.
+            // - Evitar usar el método toFixed().
+
+        const roundToDecimal = (num1, num2) =>{
+            let value = Math.pow(10, num2);
+            return Math.round(num1 * value) / value;
+        }
+
+        const roundedResult = roundToDecimal(1.3938, 2);
+        console.log(roundedResult);
+
+
+        // 7.- Crea una función que retorne los campos de un objeto que equivalgan a un valor "falsy"
+        // después de ser ejecutados por una función específica.
+        // La función debe tener dos parámetros:
+            // Primer parámetro es un objeto con x número de campos y valores.
+            // Segundo parámetro es una función que retorne un booleano, que
+            // se tiene que aplicar al objeto del primer parámetro.
+
+        
+        const returnFalsyValues = (obj, functionValid) => {
+            let falsyValues = {};
+
+            for (let key in obj){
+                if (obj.hasOwnProperty(key) // Esto es para ver si "key" pertenece al objeto
+                    && !functionValid(obj[key]) // Si el valor correspondiente a la clave no cumple con la condición
+                    ){
+                    falsyValues[key] = obj[key] 
+                }
+            }
+            return falsyValues;
+        }
+
+        const result = returnFalsyValues({ a: 1, b: '2', c: 3 }, x => typeof x === 'string')
+        console.log(result); // {a: 1, c: 3}
+
+
+        // 8.- Crea una función que convierta un número de bytes en un formato con valores legibles
+        // ('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB').
+        // La función debe tener 2 parámetros:
+            // Primer parámetro debe ser el número de bytes.
+            // Segundo parámetro debe ser un número especificando la cantidad de dígitos a los
+            // que se debe truncar el resultado (esto se puede hacer con Number.prototype.toPrecision()).
+            // Por defecto, este parámetro debe de tener un valor de 3.
+
+        
+        const fromBytesToFormattedSizeUnits = (bytes, precision = 3) =>{
+            const unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            if (bytes === 0) {
+                return '0 ' + unit[0];
+            }
+
+
+            const sign = bytes < 0 ? '-' : '';
+            const size = Math.abs(bytes);
+            const index = Math.floor(Math.log(size) / Math.log(1024));
+            const formattedSize = (size / Math.pow(1024, index)).toPrecision(precision);
+
+          
+                                                
+            return sign + formattedSize + unit[index];
+        }
+
+        const result1 = fromBytesToFormattedSizeUnits(1000);
+        console.log(result1); // 1KB
+
+
+        const result2 = fromBytesToFormattedSizeUnits(123456789);
+        console.log(result2); // 123MB
+
+
+        const result3 = fromBytesToFormattedSizeUnits(-12145489451.5932, 5);
+        console.log(result3); // -12.145GB
+
+        // No me devuelve exactamente los resultados que se piden.
+
+
+
+        // 9.- Crea una función que a partir de un objeto de entrada, retorne un objeto asegurándose
+        // que las claves del objeto estén en lowercase.
+        // La función debe tener un objeto como único parámetro.
+
+        const toLowercaseKeys = (obj) =>{
+            let objValues = {}
+            for (let key in obj){
+                if(obj.hasOwnProperty(key)){
+                    const lowercaseKey = key.toLowerCase();
+                    objValues[lowercaseKey] = obj[key]
+                }
+            }
+           return objValues;
+        }
+
+        // Ejemplo de uso
+        const myObject = { NamE: 'Charles', ADDress: 'Home Street' };
+        const myObjLowercase = toLowercaseKeys(myObject);
+        console.log(myObjLowercase); // { name: 'Charles', address: 'Home Street' }
+
+
+        // 10.- Crea una función que elimine las etiquetas html o xml de un string.
+        // La función debe tener un string como único parámetro.
+
+        const removeHTMLTags = (str) => {
+                return str.split( /<[^>]+>/g).join("")
+        }
+
+        // Ejemplo de uso de la función:
+        const result4 = removeHTMLTags('<div><span>lorem</span> <strong>ipsum</strong></div>');
+        console.log(result4); // lorem ipsum
+
+
+        // 11.- Crea una función que tome un array como parámetro y lo divida en arrays 
+        // nuevos con tantos elementos como sean especificados.
+        // La función debe tener dos parámetros:
+            // El primer parámetro es el array entero que se quiere dividir.
+            // El segundo parámetro es el número de elementos que deben tener
+            // los arrays en los que se divida el array original del primer parámetro.
+
+        const splitArrayIntoChunks = (arr, numElem) => {
+            let newArray = [];
+
+            for(let i = 0; i  < arr.length; i += numElem){
+                newArray.push(arr.slice(i, i + numElem))
+            }
+            return newArray;
+        }
+
+        //  Ejemplo de uso de la función:
+        const result5 = splitArrayIntoChunks([1, 2, 3, 4, 5, 6, 7], 3);
+        console.log(result5); // [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7 ] ]
+
+    
+
+    </script>
+</body>
+</html>
