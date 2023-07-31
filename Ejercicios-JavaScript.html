@@ -13,7 +13,9 @@
                           {id: 5, name: 'Lala'}
                          ]
 
-        console.log(arrNames[2]);
+        const objWithId3 = arrNames.find(item => item.id === 3);
+
+        console.log(objWithId3);
 
         // 2.- Dado un array de valores, devolver un array truthy 
         // (sin valores nulos, vacíos, no números, indefinidos o falsos).
